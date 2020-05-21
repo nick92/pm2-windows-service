@@ -11,6 +11,7 @@ const path = require('path'),
     inquirer = require('inquirer'),
     common = require('./common'),
     setup = require('./setup'),
+    logging = require('./logging'),
     save_dir = path.resolve(process.env.APPDATA, 'pm2-windows-service'),
     sid_file = path.resolve(save_dir, '.sid');
 
@@ -19,18 +20,18 @@ module.exports = co.wrap(function*(name, no_setup) {
 
     yield common.admin_warning();
 
-    let setup_response = yield no_setup ? Promise.resolve({
-        perform_setup: false
-    }) : inquirer.prompt([{
-        type: 'confirm',
-        name: 'perform_setup',
-        message: 'Perform environment setup (recommended)?',
-        default: true
-    }]);
+    // let setup_response = yield no_setup ? Promise.resolve({
+    //     perform_setup: false
+    // }) : inquirer.prompt([{
+    //     type: 'confirm',
+    //     name: 'perform_setup',
+    //     message: 'Perform environment setup (recommended)?',
+    //     default: true
+    // }]);
 
-    if(setup_response.perform_setup) {
+    // if(setup_response.perform_setup) {
         yield setup();
-    }
+    // }
 
     let service = new Service({
         name: name || 'PM2',
@@ -41,6 +42,7 @@ module.exports = co.wrap(function*(name, no_setup) {
     try {
         yield common.remove_previous_daemon(service);
     } catch(ex) {
+        logging.error('Previous daemon still in use, please stop or uninstall existing service before reinstalling.')
         throw new Error('Previous daemon still in use, please stop or uninstall existing service before reinstalling.');
     }
 
@@ -64,6 +66,7 @@ function* kill_existing_pm2_daemon() {
     try {
         yield exec('pm2 kill');
     } catch (ex) {
+        logging.error("pm2 instance not running");
         // PM2 daemon wasn't running, no big deal
     }
 }

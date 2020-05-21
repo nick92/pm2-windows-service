@@ -5,6 +5,7 @@ const fs = require('fs'),
     shell = require('shelljs'),
     promisify = require('util').promisify || require('promisify-node'),
     del = require('del'),
+    logging = require('./logging'),
     is_admin = require('is-admin');
 
 exports.check_platform = function() {
@@ -17,10 +18,12 @@ exports.admin_warning = function() {
     return promisify(is_admin)().
         then(admin => {
             if(!admin) {
-                console.warn('*** HINT: Run this as administrator to avoid the UAC spam ***');
+                throw new Error('pm2-windows-service has to be run on as admin ...');
+                // console.warn('*** HINT: Run this as administrator to avoid the UAC spam ***');
             }
         }, _ => {
-            console.warn('*** HINT: Run this as administrator to avoid the UAC spam ***');
+            throw new Error('pm2-windows-service has to be run on as admin ...');
+            // console.warn('*** HINT: Run this as administrator to avoid the UAC spam ***');
             // Don't re-throw, we just assume they aren't admin if it errored
         });
 };
@@ -39,6 +42,7 @@ exports.guess_pm2_global_dir = function() {
         // Then resolve to the pm2 directory from there
         dir = path.join(dir, '..', 'node_modules', 'pm2', 'index.js' );
     } catch(ex) {
+        logging.error('guess_pm2_global_dir error:'+ex)
         // Ignore error, just return undefined
     }
 
