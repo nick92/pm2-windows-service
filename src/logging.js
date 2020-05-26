@@ -10,25 +10,10 @@ let logger = createLogger({
         prettyPrint()
     ),
     transports: [
-        new winston.transports.File({ filename: 'error.log', level: 'error', handleExceptions: true }),
-        new winston.transports.File({ filename: 'basic.log', level: 'info' }),
-        new winston.transports.File({ filename: 'debug.log', level: 'debug' })
+        new winston.transports.File({ filename: 'error.log', level: 'error', handleExceptions: true })
     ]
 });
   
-
-exports.info = function(message) {
-    logger.info(message);
-};
-
-exports.debug = function(message) {
-    logger.debug(message);
-};
-
-exports.warn = function(message) {
-    logger.warn(message);
-};
-
 exports.error = function(message) {
     logger.error(message);
 };

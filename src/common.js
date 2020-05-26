@@ -18,11 +18,11 @@ exports.admin_warning = function() {
     return promisify(is_admin)().
         then(admin => {
             if(!admin) {
-                throw new Error('pm2-windows-service has to be run on as admin ...');
+                throw new Error('pm2-windows-service has to be run as admin ...');
                 // console.warn('*** HINT: Run this as administrator to avoid the UAC spam ***');
             }
         }, _ => {
-            throw new Error('pm2-windows-service has to be run on as admin ...');
+            throw new Error('pm2-windows-service has to be run as admin ...');
             // console.warn('*** HINT: Run this as administrator to avoid the UAC spam ***');
             // Don't re-throw, we just assume they aren't admin if it errored
         });

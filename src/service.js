@@ -2,8 +2,6 @@
 
 const path = require('path'),
     common = require('./common'),
-    logging = require('./logging'),
-    pm2 = require('pm2'),
     // TODO: Integration test ';' delimited values!!!
     // TODO: [deprecated] Remove support for PM2_SERVICE_SCRIPT and PM2_SERVICE_CONFIG in future
     start_script = process.env.PM2_SERVICE_SCRIPTS || process.env.PM2_SERVICE_CONFIG || process.env.PM2_SERVICE_SCRIPT,
@@ -25,8 +23,7 @@ if(global_pm2_dir) {
     try {
         pm2 = require(global_pm2_dir);
     } catch(ex) {
-        console.error('Sorry, this script requires pm2');
-        logging.error('Sorry, this script requires pm2');
+        handle_error(ex);
 	  	process.exit(1);
     }
 }
@@ -89,26 +86,20 @@ function process_start_script(start_script) {
 function handle_error(err) {
     if(err) {
         if(err instanceof Error) {
-            logging.error(err);
             throw err;
         }
 
         // We stringify since PM2 chucks us back objects that just end up as [Object object] otherwise
-        logging.error(JSON.stringify(err));
         throw new Error(JSON.stringify(err));
     }
 }
 
 process.on('message', m => {
-
     if (m == 'shutdown') {
-
-		console.log('force shutdown fix');
-
 	    	if (pm2) {
 			pm2.killDaemon(function(err, apps) { 
-                console.log(err, apps);
-                logging.err(err);
+                if(err)
+                    handle_error(err)
 			});
 		}
     }
