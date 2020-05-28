@@ -2,11 +2,17 @@
 
 Allows easily installing and uninstalling [PM2](https://github.com/Unitech/PM2/) as a service on Windows machines - inspired by [pm2-windows-startup](https://github.com/marklagendijk/node-pm2-windows-startup), and largely achieved using [node-windows](https://github.com/coreybutler/node-windows).
 
+
 ```sh
 npm i pm2-windows-service -g
 ```
 
 **NOTE:** pm2-windows-service currently requires node v4.0.0+, if node v0.12.x support is a requirement for you, please post in [this issue](https://github.com/jon-hall/pm2-windows-service/issues/2).
+
+**FORK INFO**
+The reason for the fork from the original work by [Jon Hall](https://github.com/jon-hall/pm2-windows-service) is due to the previous implementation being unsupported since 2017, this causes issues with certain packages that are used being out-of-date and not working on newer systems 
+
+In addition to updating outdated packages this fork also includes the ability to specify a log on as user for the windows service that is created, this is an added as an extra step in the set-up of the service
 
 ### Install and Uninstall the Service
 > TIP: Run these from an administrative command prompt to avoid getting hit with a bunch of UAC dialogs
@@ -29,6 +35,7 @@ The service will then restart that set of processes when the service is next sta
 You can control what the PM2 service runs using the `PM2_SERVICE_SCRIPTS` environment variable, which should be set to a semi-colon separated list of javascript files and/or [json config files](http://pm2.keymetrics.io/docs/usage/application-declaration/) to run when the service starts (using `pm2 start`).
 
 If `PM2_SERVICE_SCRIPTS` is not set, then the default behaviour is to call [`pm2 resurrect`](http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/#related-commands) on service startup - when PM2 is running with the list of processes you want launched by the service, use [`pm2 save`](http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/#related-commands) to dump the process list, ready for the service to restore it when it next starts.
+
 
 ### **Caveats**
 While testing this, a few caveats have arisen which need to be detailed upfront, as they can lead to issues when PM2 is installed as a service:
