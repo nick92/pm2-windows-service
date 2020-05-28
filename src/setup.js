@@ -14,7 +14,7 @@ module.exports = function() {
         type: 'input',
         name: 'PM2_HOME',
         message: 'PM2_HOME value (this path should be accessible to the service user and\nshould not contain any "user-context" variables [e.g. %APPDATA%]):',
-        default: process.env.PM2_HOME || '',
+        default: process.env.PM2_HOME || common.guess_pm2_home_dir(),
         when(answers) {
             return answers.SET_PM2_HOME;
         }

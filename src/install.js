@@ -33,35 +33,44 @@ module.exports = co.wrap(function*(name, no_setup) {
         yield setup();
     }
 
-    const domain = await inquirer.prompt([{
-        type: 'input',
-        name: 'domain',
-        message: 'Enter logon domain:',
-        default: ''
-    }])
-
-    const username = await inquirer.prompt([{
-        type: 'input',
-        name: 'user_name',
-        message: 'Enter logon username:',
-        default: ''
-    }])
-
-    const password = await inquirer.prompt([{
-        type: 'password',
-        name: 'password',
-        message: 'Enter logon password:',
-        default: ''
-    }])
+    let enter_user_details = yield inquirer.prompt([{
+        type: 'confirm',
+        name: 'perform_logonas',
+        message: 'Set Log On As account for the service (if not Local System will be used)?',
+        default: true
+    }]);
 
     let service = new Service({
         name: name || 'PM2',
-        script: path.join(__dirname, 'service.js') 
+        script: path.join(__dirname, 'service.js')
     });
 
-    service.logOnAs.domain = domain;
-    service.logOnAs.account = username;
-    service.logOnAs.password = password;
+    if(enter_user_details.perform_logonas) {
+        let domain = yield inquirer.prompt([{
+            type: 'input',
+            name: 'domain',
+            message: 'Enter logon domain:',
+            default: '.'
+        }])
+
+        let username = yield inquirer.prompt([{
+            type: 'input',
+            name: 'username',
+            message: 'Enter logon username:',
+            default: ''
+        }])
+
+        let password = yield inquirer.prompt([{
+            type: 'password',
+            name: 'password',
+            message: 'Enter logon password:',
+            default: ''
+        }])
+
+        service.logOnAs.domain = domain.domain;
+        service.logOnAs.account = username.username;
+        service.logOnAs.password = password.password;
+    }
 
     // Let this throw if we can't remove previous daemon
     try {

@@ -1,10 +1,10 @@
 'use strict';
 const fs = require('fs'),
     path = require('path'),
-    exec_sync = require('child_process').execSync,
     shell = require('shelljs'),
     promisify = require('util').promisify || require('promisify-node'),
     del = require('del'),
+    os = require('os'),
     logging = require('./logging'),
     is_admin = require('is-admin');
 
@@ -41,6 +41,22 @@ exports.guess_pm2_global_dir = function() {
 
         // Then resolve to the pm2 directory from there
         dir = path.join(dir, '..', 'node_modules', 'pm2', 'index.js' );
+    } catch(ex) {
+        logging.error('guess_pm2_global_dir error:'+ex)
+        // Ignore error, just return undefined
+    }
+
+    return dir;
+};
+
+exports.guess_pm2_home_dir = function() {
+    let dir;
+
+    try {
+        // Then resolve to the pm2 directory from there
+        const homedir = os.homedir();
+
+        dir = path.join(homedir, '.pm2');
     } catch(ex) {
         logging.error('guess_pm2_global_dir error:'+ex)
         // Ignore error, just return undefined
