@@ -1,6 +1,6 @@
 {
   "name": "@nick92/pm2-windows-service",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Install PM2 as a service on windows",
   "main": "src/index.js",
   "bin": {
