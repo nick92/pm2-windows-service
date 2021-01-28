@@ -28,16 +28,16 @@
   "dependencies": {
     "co": "^4.6.0",
     "co-event": "^0.1.0",
-    "del": "^2.1.0",
-    "fs-extra": "^4.0.2",
-    "inquirer": "^7.1.0",
+    "del": "^2.2.2",
+    "fs-extra": "^4.0.3",
+    "inquirer": "^7.3.3",
     "is-admin": "^1.0.2",
     "node-windows": "^0.1.14",
-    "pm2": "^4.4.0",
+    "pm2": "^4.5.1",
     "promisify-node": "^0.3.0",
-    "shelljs": "^0.7.0",
-    "winston": "^3.2.1",
-    "yargs": "^4.7.1"
+    "shelljs": "^0.7.8",
+    "winston": "^3.3.3",
+    "yargs": "^4.8.1"
   },
   "engines": {
     "node": ">=4.0.0"
@@ -46,6 +46,6 @@
     "win32"
   ],
   "devDependencies": {
-    "temp": "^0.8.3"
+    "temp": "^0.8.4"
   }
 }
