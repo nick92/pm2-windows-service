@@ -1,6 +1,6 @@
 {
   "name": "@nick92/pm2-windows-service",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Install PM2 as a service on windows",
   "main": "src/index.js",
   "bin": {
@@ -33,11 +33,11 @@
     "inquirer": "^7.1.0",
     "is-admin": "^1.0.2",
     "node-windows": "^0.1.14",
+    "pm2": "^4.4.0",
     "promisify-node": "^0.3.0",
     "shelljs": "^0.7.0",
-    "yargs": "^4.7.1",
-    "pm2": "^4.4.0",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "yargs": "^4.7.1"
   },
   "engines": {
     "node": ">=4.0.0"
